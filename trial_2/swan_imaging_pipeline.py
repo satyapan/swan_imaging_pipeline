@@ -2,7 +2,6 @@
 
 import os
 
-
 #input
 name_src = 'CYGOBSTEST_20170306_124648'
 name_cal = 'CASOBSTEST_20170306_124648'
@@ -11,6 +10,21 @@ pixel_dim_src = "548.0arcsec"
 image_dim_cal = 64
 pixel_dim_cal = "548.0arcsec"
 
+'''
+import readline
+readline.parse_and_bind("tab: complete")
+
+#user input
+name_src = raw_input('Folder containing source visibilities: ')
+name_cal = raw_input('Folder containing calibrator visibilities: ')
+image_dim_src = int(raw_input('Dimension of source image: '))
+pixel_dim_src = raw_input('Source image pixel size in arcsec: ')
+image_dim_cal = int(raw_input('Dimension of calibrator image: '))
+pixel_dim_cal = raw_input('Calibrator image pixel size in arcsec: ')
+'''
+
+
+#get metadata
 file_src = open(name_src+'/info.txt', 'r')
 lines_src = file_src.readlines()
 tiles_src = len(lines_src[3].split(','))
@@ -38,26 +52,6 @@ lst_cal = float(data_cal[6])
 lst_cal_end = float(data_cal[7])
 nfft_cal = int(data_cal[4])
 
-'''
-#user input
-tiles_src = int(raw_input("Enter number of tiles in source observation: "))
-tiles_cal = int(raw_input("Enter number of tiles in calibrator observation: "))
-int_time = float(raw_input("Enter the integration time used (in sec): "))
-ra_src = raw_input("Enter source RA (eg. 10h10m10s): ")
-dec_src = raw_input("Enter source Dec (eg. +10d10m10s): ")
-freq_centre_src = float(raw_input("Enter central frequency of source observation (in MHz): "))
-image_dim_src = int(raw_input("Enter dimension of source image: "))
-pixel_dim_src = raw_input("Enter pixel dimension for source image (eg. 10arcsec): ")
-date_src = raw_input("Enter date of source observation (eg. YYYY/MM/DD): ")
-ra_cal = raw_input("Enter calibrator RA (eg. 10h10m10s): ")
-dec_cal = raw_input("Enter calibrator Dec (eg. +10d10m10s): ")
-freq_centre_cal = float(raw_input("Enter central frequency of calibrator observation (in MHz): "))
-image_dim_cal = int(raw_input("Enter dimension of calibrator image: "))
-pixel_dim_cal = raw_input("Enter pixel dimension for calibrator image (eg. 10arcsec): ")
-date_cal = raw_input("Enter date of calibrator observation (eg. YYYY/MM/DD): ")
-lst_src = float(raw_input("Enter lst at start of source observation (in hour): "))
-lst_cal = float(raw_input("Enter lst at start of calibrator observation (in hour): "))
-'''
 
 #run scripts
 print("----------Creating tables compatible with casa----------\n")
@@ -72,3 +66,6 @@ print("----------Simulation completed successfully----------\n")
 print("----------Writing visibilities into casa table----------\n")
 os.system("casa -c edit_ms.py")
 print("----------Casa table created successfully----------\n")
+print("----------Calibration and Imaging----------\n")
+os.system("casa -c imaging.py " + str(image_dim_src) + " " + pixel_dim_src + " " + str(image_dim_cal) + " " + pixel_dim_cal)
+print("----------Calibration and Imaging completed successfully----------\n")
