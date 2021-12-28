@@ -4,8 +4,8 @@ import os
 
 #input
 '''
-name_src = 'CYGOBSTEST_20170306_124648'
-name_cal = 'CASOBSTEST_20170306_124648'
+name_src = 'SUN_20210414_121708'
+name_cal = 'SUN_20210414_121708'
 image_dim_src = 64
 pixel_dim_src = "548.0arcsec"
 image_dim_cal = 64
@@ -67,9 +67,6 @@ print("----------Simulation completed successfully----------\n")
 print("----------Writing visibilities into casa table----------\n")
 os.system("casa -c edit_ms.py")
 print("----------Casa table created successfully----------\n")
-print("----------Applying RFI Flag masks----------\n")
-os.system("casa -c flagging.py " + name_src + " " + name_cal)
-print("----------Flag masks applied successfully----------\n")
 print("----------Calibration and Imaging----------\n")
-os.system("casa -c cal_image.py " + str(image_dim_src) + " " + pixel_dim_src + " " + str(image_dim_cal) + " " + pixel_dim_cal)
+os.system("casa -c imaging.py " + str(image_dim_src) + " " + pixel_dim_src + " " + str(image_dim_cal) + " " + pixel_dim_cal)
 print("----------Calibration and Imaging completed successfully----------\n")
